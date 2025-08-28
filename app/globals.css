@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+:root {
+  --brand: #265084;
+  --dark-brand: #102c4e;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+}
+
+body {
+  box-sizing: border-box;
+}
