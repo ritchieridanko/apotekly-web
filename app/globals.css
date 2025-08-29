@@ -13,3 +13,19 @@
 body {
   box-sizing: border-box;
 }
+
+@keyframes auth-bg-scroll-left {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -2158px 0;
+  }
+}
+
+.scrolling-auth-bg {
+  background-image: url("/auth-background.webp");
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+  animation: auth-bg-scroll-left 30s linear infinite;
+}
