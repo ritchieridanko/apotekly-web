@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC } from "react";
 
 import { ROUTES } from "@/constants";
 import {
@@ -8,10 +8,10 @@ import {
   AuthTextField,
   RedirectLink,
 } from "@/features/auth/components";
+import { useLoginForm } from "@/features/auth/hooks";
 
 const LoginForm: FC = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const { form, errors, setEmail, setPassword, handleLogin } = useLoginForm();
   const isLoading: boolean = false;
 
   return (
@@ -19,8 +19,8 @@ const LoginForm: FC = () => {
       <AuthTextField
         label="Email"
         placeholder="Enter your email"
-        value={email}
-        validity={{ isValid: true, invalidLabel: "" }}
+        value={form.email}
+        validity={{ isValid: !errors.email, invalidLabel: errors.email || "" }}
         isDisabled={isLoading}
         onChange={setEmail}
       />
@@ -28,8 +28,11 @@ const LoginForm: FC = () => {
       <AuthTextField
         label="Password"
         placeholder="Enter your password"
-        value={password}
-        validity={{ isValid: true, invalidLabel: "" }}
+        value={form.password}
+        validity={{
+          isValid: !errors.password,
+          invalidLabel: errors.password || "",
+        }}
         isDisabled={isLoading}
         withSecurity
         onChange={setPassword}
@@ -48,7 +51,7 @@ const LoginForm: FC = () => {
         title="Login"
         loadingTitle="Logging In..."
         isLoading={isLoading}
-        onClick={() => {}}
+        onClick={handleLogin}
       />
     </div>
   );
