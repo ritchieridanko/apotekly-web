@@ -1,8 +1,14 @@
 import { debounce } from "lodash";
+import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { ValidationError } from "yup";
 
+import { ROUTES } from "@/constants";
+import { useLoginMutation } from "@/features/auth/services";
+import { setCredentials } from "@/features/auth/slices/authSlice";
 import { loginSchema } from "@/features/auth/validators";
+import { AppDispatch } from "@/stores";
 
 // TODO
 // 1. Forward errors to toast stack
@@ -18,6 +24,9 @@ const useLoginForm = (delay = 300) => {
         password: "",
     });
     const [errors, setErrors] = useState<Partial<LoginFormFields>>({});
+    const [login, { isLoading }] = useLoginMutation();
+    const dispatch = useDispatch<AppDispatch>();
+    const router = useRouter();
 
     const debouncedValidation = useRef(
         debounce(
@@ -64,7 +73,14 @@ const useLoginForm = (delay = 300) => {
         try {
             await loginSchema.validate(form, { abortEarly: false });
             setErrors({}); // clear errors
+
+            const response = await login(form).unwrap();
+            dispatch(setCredentials(response));
+
+            router.replace(ROUTES.HOME);
         } catch (err) {
+            console.log(err);
+
             if (err instanceof ValidationError) {
                 const newErrors: Partial<LoginFormFields> = {};
 
@@ -73,13 +89,13 @@ const useLoginForm = (delay = 300) => {
                 });
 
                 setErrors(newErrors);
+            } else if ("message" in (err as any)) {
+                // TODO (1)
             }
-
-            // TODO (1)
         }
-    }, [form]);
+    }, [form, login, dispatch, router]);
 
-    return { form, errors, setEmail, setPassword, handleLogin };
+    return { form, errors, setEmail, setPassword, isLoading, handleLogin };
 };
 
 export default useLoginForm;

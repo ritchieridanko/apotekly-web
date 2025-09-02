@@ -11,8 +11,8 @@ import {
 import { useLoginForm } from "@/features/auth/hooks";
 
 const LoginForm: FC = () => {
-  const { form, errors, setEmail, setPassword, handleLogin } = useLoginForm();
-  const isLoading: boolean = false;
+  const { form, errors, setEmail, setPassword, isLoading, handleLogin } =
+    useLoginForm();
 
   return (
     <div className="w-full flex flex-col justify-center items-center gap-4">
