@@ -7,7 +7,7 @@ import { ROUTES } from "@/constants";
 import { useRegisterMutation } from "@/features/auth/services";
 import { setCredentials } from "@/features/auth/slices/authSlice";
 import { registerSchema } from "@/features/auth/validators";
-import { useAppDispatch } from "@/stores/hooks";
+import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 
 // TODO
 // 1. Forward errors to toast stack
@@ -25,7 +25,9 @@ const useRegisterForm = (delay = 300) => {
         confirmPassword: "",
     });
     const [errors, setErrors] = useState<Partial<RegisterFormFields>>({});
-    const [register, { isLoading }] = useRegisterMutation();
+    const { isLoading } = useAppSelector((state) => state.auth);
+
+    const [register] = useRegisterMutation();
     const dispatch = useAppDispatch();
     const router = useRouter();
 
