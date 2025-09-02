@@ -17,9 +17,9 @@ const RegisterForm: FC = () => {
     setEmail,
     setPassword,
     setConfirmPassword,
+    isLoading,
     handleRegister,
   } = useRegisterForm();
-  const isLoading: boolean = false;
 
   return (
     <div className="w-full flex flex-col justify-center items-center gap-4">

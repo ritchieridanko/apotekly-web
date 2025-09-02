@@ -1,8 +1,13 @@
 import { debounce } from "lodash";
+import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import { ValidationError } from "yup";
 
+import { ROUTES } from "@/constants";
+import { useRegisterMutation } from "@/features/auth/services";
+import { setCredentials } from "@/features/auth/slices/authSlice";
 import { registerSchema } from "@/features/auth/validators";
+import { useAppDispatch } from "@/stores/hooks";
 
 // TODO
 // 1. Forward errors to toast stack
@@ -20,6 +25,9 @@ const useRegisterForm = (delay = 300) => {
         confirmPassword: "",
     });
     const [errors, setErrors] = useState<Partial<RegisterFormFields>>({});
+    const [register, { isLoading }] = useRegisterMutation();
+    const dispatch = useAppDispatch();
+    const router = useRouter();
 
     const debouncedValidation = useRef(
         debounce(
@@ -71,7 +79,14 @@ const useRegisterForm = (delay = 300) => {
         try {
             await registerSchema.validate(form, { abortEarly: false });
             setErrors({}); // clear errors
+
+            const response = await register(form).unwrap();
+            dispatch(setCredentials(response));
+
+            router.replace(ROUTES.HOME);
         } catch (err) {
+            console.log(err);
+
             if (err instanceof ValidationError) {
                 const newErrors: Partial<RegisterFormFields> = {};
 
@@ -80,13 +95,14 @@ const useRegisterForm = (delay = 300) => {
                 });
 
                 setErrors(newErrors);
+            } else {
+                const errResponse = err as RTKErrorResponse;
+                console.log("Registration failed:", errResponse.data?.message ?? "Unknown error"); // TODO (1)
             }
-
-            // TODO (1)
         }
-    }, [form]);
+    }, [form, register, dispatch, router]);
 
-    return { form, errors, setEmail, setPassword, setConfirmPassword, handleRegister };
+    return { form, errors, setEmail, setPassword, setConfirmPassword, isLoading, handleRegister };
 };
 
 export default useRegisterForm;
