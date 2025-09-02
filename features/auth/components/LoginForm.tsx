@@ -20,7 +20,10 @@ const LoginForm: FC = () => {
         label="Email"
         placeholder="Enter your email"
         value={form.email}
-        validity={{ isValid: !errors.email, invalidLabel: errors.email || "" }}
+        validity={{
+          isValid: !errors.email,
+          invalidLabel: errors.email || "",
+        }}
         isDisabled={isLoading}
         onChange={setEmail}
       />

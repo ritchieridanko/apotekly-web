@@ -3,6 +3,7 @@
 import { FC } from "react";
 
 import { RedirectLink } from "@/features/auth/components";
+import { useAppSelector } from "@/stores/hooks";
 
 interface AuthFooterProps {
   title: string;
@@ -11,7 +12,7 @@ interface AuthFooterProps {
 }
 
 const AuthFooter: FC<AuthFooterProps> = ({ title, text, href }) => {
-  const isLoading: boolean = false;
+  const isLoading: boolean = useAppSelector((state) => state.auth.isLoading);
 
   return (
     <p className="w-full text-center">

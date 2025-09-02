@@ -7,7 +7,7 @@ import { ROUTES } from "@/constants";
 import { useLoginMutation } from "@/features/auth/services";
 import { setCredentials } from "@/features/auth/slices/authSlice";
 import { loginSchema } from "@/features/auth/validators";
-import { useAppDispatch } from "@/stores/hooks";
+import { useAppDispatch, useAppSelector } from "@/stores/hooks";
 
 // TODO
 // 1. Forward errors to toast stack
@@ -23,7 +23,9 @@ const useLoginForm = (delay = 300) => {
         password: "",
     });
     const [errors, setErrors] = useState<Partial<LoginFormFields>>({});
-    const [login, { isLoading }] = useLoginMutation();
+    const { isLoading } = useAppSelector((state) => state.auth);
+
+    const [login] = useLoginMutation();
     const dispatch = useAppDispatch();
     const router = useRouter();
 

@@ -1,12 +1,13 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { type Action, createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 import type { AuthResponse } from "@/features/auth/types";
 
 interface AuthState {
     accessToken: string | null;
+    isLoading: boolean;
 }
 
-const initialState: AuthState = { accessToken: null };
+const initialState: AuthState = { accessToken: null, isLoading: false };
 
 const authSlice = createSlice({
     name: "auth",
@@ -18,6 +19,28 @@ const authSlice = createSlice({
         resetCredentials: (state) => {
             state.accessToken = null;
         },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addMatcher(
+                (action: Action) =>
+                    action.type.startsWith("authApi/") &&
+                    action.type.endsWith("/pending"),
+                (state) => {
+                    state.isLoading = true;
+                },
+            )
+            .addMatcher(
+                (action: Action) =>
+                    action.type.startsWith("authApi/") &&
+                    (
+                        action.type.endsWith("/fulfilled") ||
+                        action.type.endsWith("/rejected")
+                    ),
+                (state) => {
+                    state.isLoading = false;
+                },
+            );
     },
 });
 
