@@ -1,14 +1,13 @@
 import { debounce } from "lodash";
 import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
 import { ValidationError } from "yup";
 
 import { ROUTES } from "@/constants";
 import { useLoginMutation } from "@/features/auth/services";
 import { setCredentials } from "@/features/auth/slices/authSlice";
 import { loginSchema } from "@/features/auth/validators";
-import { AppDispatch } from "@/stores";
+import { useAppDispatch } from "@/stores/hooks";
 
 // TODO
 // 1. Forward errors to toast stack
@@ -25,7 +24,7 @@ const useLoginForm = (delay = 300) => {
     });
     const [errors, setErrors] = useState<Partial<LoginFormFields>>({});
     const [login, { isLoading }] = useLoginMutation();
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
     const router = useRouter();
 
     const debouncedValidation = useRef(
@@ -89,8 +88,9 @@ const useLoginForm = (delay = 300) => {
                 });
 
                 setErrors(newErrors);
-            } else if ("message" in (err as any)) {
-                // TODO (1)
+            } else {
+                const errResponse = err as RTKErrorResponse;
+                console.log("Login failed:", errResponse.data?.message ?? "Unknown error"); // TODO (1)
             }
         }
     }, [form, login, dispatch, router]);
