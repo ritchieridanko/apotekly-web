@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 
-import type { AuthPayload, AuthResponse } from "@/features/auth/types";
+import type { AuthPayload, AuthResponse, ForgotPasswordPayload } from "@/features/auth/types";
 import { baseQuery } from "@/libs/rtk";
 
 export const authApi = createApi({
@@ -27,7 +27,14 @@ export const authApi = createApi({
                 method: "POST",
             }),
         }),
+        forgotPassword: builder.mutation<APIGenericResponse, ForgotPasswordPayload, APIErrorResponse>({
+            query: (body: ForgotPasswordPayload) => ({
+                url: "/auth/forgot-password",
+                method: "POST",
+                body,
+            }),
+        }),
     }),
 });
 
-export const { useLoginMutation, useRefreshSessionMutation, useRegisterMutation } = authApi;
+export const { useForgotPasswordMutation, useLoginMutation, useRefreshSessionMutation, useRegisterMutation } = authApi;

@@ -1,3 +1,7 @@
+interface APIGenericResponse {
+    message: string;
+}
+
 interface APIErrorResponse {
     message: string;
 }

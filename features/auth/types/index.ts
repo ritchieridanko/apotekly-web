@@ -1,3 +1,4 @@
 import { AuthPayload, AuthResponse } from "./auth";
+import { ForgotPasswordPayload } from "./password";
 
-export type { AuthPayload, AuthResponse };
+export type { AuthPayload, AuthResponse, ForgotPasswordPayload };
