@@ -1,3 +1,19 @@
-import { authApi, useForgotPasswordMutation, useLoginMutation, useRegisterMutation, useRefreshSessionMutation } from "./authApi";
+import {
+    authApi,
+    useForgotPasswordMutation,
+    useLoginMutation,
+    useRegisterMutation,
+    useRefreshSessionMutation,
+    useResetPasswordMutation,
+    useValidateResetTokenMutation,
+} from "./authApi";
 
-export { authApi, useForgotPasswordMutation, useLoginMutation, useRegisterMutation, useRefreshSessionMutation };
+export {
+    authApi,
+    useForgotPasswordMutation,
+    useLoginMutation,
+    useRegisterMutation,
+    useRefreshSessionMutation,
+    useResetPasswordMutation,
+    useValidateResetTokenMutation,
+};

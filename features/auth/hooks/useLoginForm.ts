@@ -80,8 +80,6 @@ const useLoginForm = (delay = 300) => {
 
             router.replace(ROUTES.HOME);
         } catch (err) {
-            console.log(err);
-
             if (err instanceof ValidationError) {
                 const newErrors: Partial<LoginFormFields> = {};
 

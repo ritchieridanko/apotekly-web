@@ -1,6 +1,13 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 
-import type { AuthPayload, AuthResponse, ForgotPasswordPayload } from "@/features/auth/types";
+import type {
+    AuthPayload,
+    AuthResponse,
+    ForgotPasswordPayload,
+    ResetPasswordPayload,
+    TokenValidationPayload,
+    TokenValidationResponse,
+} from "@/features/auth/types";
 import { baseQuery } from "@/libs/rtk";
 
 export const authApi = createApi({
@@ -34,7 +41,28 @@ export const authApi = createApi({
                 body,
             }),
         }),
+        resetPassword: builder.mutation<APIGenericResponse, ResetPasswordPayload, APIErrorResponse>({
+            query: (body: ResetPasswordPayload) => ({
+                url: "/auth/reset-password/confirm",
+                method: "POST",
+                body,
+            }),
+        }),
+        validateResetToken: builder.mutation<TokenValidationResponse, TokenValidationPayload, APIErrorResponse>({
+            query: (body: TokenValidationPayload) => ({
+                url: "/auth/reset-password/validate",
+                method: "POST",
+                body,
+            }),
+        })
     }),
 });
 
-export const { useForgotPasswordMutation, useLoginMutation, useRefreshSessionMutation, useRegisterMutation } = authApi;
+export const {
+    useForgotPasswordMutation,
+    useLoginMutation,
+    useRefreshSessionMutation,
+    useRegisterMutation,
+    useResetPasswordMutation,
+    useValidateResetTokenMutation,
+} = authApi;

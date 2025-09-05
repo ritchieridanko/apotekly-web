@@ -1,6 +1,18 @@
 import { FC } from "react";
 
 const Eye: FC<IconProps> = ({ strokeWidth, size }) => {
+  const sizeClasses = {
+    4: "h-4 w-4",
+    5: "h-5 w-5",
+    6: "h-6 w-6",
+    7: "h-7 w-7",
+    8: "h-8 w-8",
+    9: "h-9 w-9",
+    10: "h-10 w-10",
+  };
+
+  const sizeClass = sizeClasses[size as keyof typeof sizeClasses] || "h-7 w-7";
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -8,7 +20,7 @@ const Eye: FC<IconProps> = ({ strokeWidth, size }) => {
       viewBox="0 0 24 24"
       strokeWidth={strokeWidth}
       stroke="currentColor"
-      className={`h-${size} w-${size}`}
+      className={`${sizeClass}`}
     >
       <path
         strokeLinecap="round"
